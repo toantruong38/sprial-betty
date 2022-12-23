@@ -1,22 +1,24 @@
-import React from 'react'
+import React from "react";
 
 class Workspace extends React.PureComponent {
-  render () {
-    const {children, length, editing} = this.props
+  render() {
+    const { children, length, editing, hidden } = this.props;
     return (
-      <div 
+      <div
         style={{
-          backgroundColor: editing ? 'transparent' : '#fff',
-          margin: 'auto',
-          position: 'relative',
+          backgroundColor: editing ? "transparent" : "#fff",
+          margin: "auto",
+          position: "relative",
           width: length,
           height: length,
-          transition: '.2s'
-        }}>
+          transition: ".2s",
+          display: hidden ? "none" : "",
+        }}
+      >
         {children}
       </div>
-    )
+    );
   }
 }
 
-export default Workspace
+export default Workspace;

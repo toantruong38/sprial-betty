@@ -1,45 +1,56 @@
-import React from 'react'
-import SpiralPointsGetter from './SpiralPointsGetter'
-import SpiralCanvas from './SpiralCanvas'
-import { layout } from '../lib/constants'
-import chroma from 'chroma-js'
+import React from "react";
+import SpiralPointsGetter from "./SpiralPointsGetter";
+import SpiralCanvas from "./SpiralCanvas";
+import { layout } from "../lib/constants";
+import chroma from "chroma-js";
 
-const { coloring } = require('../lib/constants')
+const { coloring } = require("../lib/constants");
 
 class Filter extends React.PureComponent {
   findDarkestColor = () => {
     // TODO: move
-    const colors = coloring[this.props.colorIndex].dark.colors
-    let darkest
+    const colors = coloring[this.props.colorIndex].dark.colors;
+    let darkest;
     colors.forEach(({ color }) => {
-      if (darkest === undefined) darkest = color
+      if (darkest === undefined) darkest = color;
       else {
         if (chroma(darkest).luminance() > chroma(color).luminance()) {
-          darkest = color
+          darkest = color;
         }
       }
-    })
-    return darkest
-  }
+    });
+    return darkest;
+  };
   render() {
-    const { filter: {name, colorIndex}, img, rings, setEditingPhoto, length, editing, setAnimating, clickedDownload } = this.props
-    if (!img || !img.data) return null
-    const maxSize = 1500
+    const {
+      filter: { name, colorIndex },
+      img,
+      rings,
+      setEditingPhoto,
+      length,
+      editing,
+      setAnimating,
+      clickedDownload,
+    } = this.props;
+    if (!img || !img.data) return null;
+    const maxSize = 1500;
     switch (name) {
-      case 'spiral':
+      case "spiral":
         return (
-          <SpiralPointsGetter
-            {...img}
-            rings={rings} >
+          <SpiralPointsGetter {...img} rings={rings}>
             {({ points, width, height, scale }) => {
               return (
                 <div>
                   {/* Interactive asset */}
                   <SpiralCanvas
-                    type={'preview'}
+                    type={"preview"}
                     setEditingPhoto={setEditingPhoto}
-                    onStartAnimation={() => {setAnimating(true)}}
-                    onEndAnimation={() => {setAnimating(false)}}
+                    onStartAnimation={() => {
+                      setAnimating(true);
+                    }}
+                    onEndAnimation={() => {
+                      setAnimating(false);
+                    }}
                     animate
                     enableRetina={true}
                     editing={editing}
@@ -52,26 +63,34 @@ class Filter extends React.PureComponent {
                     colorIndex={colorIndex}
                   />
                   {/* Downloading asset */}
-                  {clickedDownload && <SpiralCanvas
-                    type={'print'}
-                    enableRetina={false}
-                    id={layout.ids.spiralCanvas}
-                    width={width}
-                    height={height}
-                    scale={scale}
-                    points={points}
-                    length={maxSize}
-                    style={{pointerEvents: 'none', zIndex: -1, visibility: 'hidden', transform: 'translateZ(0)'}}
-                    colorIndex={colorIndex} />}
+                  {clickedDownload && (
+                    <SpiralCanvas
+                      type={"print"}
+                      enableRetina={false}
+                      // id={layout.ids.spiralCanvas}
+                      width={width}
+                      height={height}
+                      scale={scale}
+                      points={points}
+                      length={maxSize}
+                      style={{
+                        pointerEvents: "none",
+                        zIndex: -1,
+                        visibility: "hidden",
+                        transform: "translateZ(0)",
+                      }}
+                      colorIndex={colorIndex}
+                    />
+                  )}
                 </div>
-              )
+              );
             }}
           </SpiralPointsGetter>
-        )
+        );
       default:
-        return null
+        return null;
     }
   }
 }
 
-export default Filter
+export default Filter;
